@@ -6,7 +6,7 @@
 //  Copyright Digital Arch Design, 2009-2010. See LICENSE file for details.
 //
 
-@interface BFPagedContainerView : UIView 
+@interface BFPagedContainerView : UIView
 {
     IBOutlet UIScrollView *scrollView;
 }

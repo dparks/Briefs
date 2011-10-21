@@ -10,16 +10,16 @@
 
 @protocol BFLoadingViewDelegate;
 
-@interface BFLoadingViewController : UIViewController 
+@interface BFLoadingViewController : UIViewController
 {
     // Outlets
     IBOutlet BFProgressBar  *progress;
     IBOutlet UILabel        *statusLabel;
     IBOutlet UIButton       *dismissButton;
-    
+
     id<BFLoadingViewDelegate>    delegate;
     NSString                        *workingStatus;
-    
+
     // Internals
     NSURLConnection                 *connection;
     NSMutableData                   *data;
@@ -48,5 +48,5 @@
 
 @optional
 - (void)loadingView:(BFLoadingViewController *)controller shouldDismissView:(BOOL)animate;
-                                                                                  
+
 @end

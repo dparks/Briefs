@@ -13,19 +13,19 @@
 typedef enum {
     /** Start-up triggered by a brief:// or briefcast:// url */
     BFMainViewOpenedByURL = -2100,
-    
+
     /** restarting the app, after it was interuppted while showing a brief */
     BFMainViewClosedWhilePlayingBrief = -2101,
-    
+
     /** user has not entered any new briefs or briefcasts, encourage them */
     BFMainViewNoDataToDisplay = -2102,
-    
+
     /** the default state, which presents recently opened briefs/briefcasts */
     BFMainViewDefaultState = -2103,
-    
+
     /** first time the user opens the app, show welcome launch */
     BFMainViewFirstTimeOpened = -2104,
-    
+
 } BFMainViewState;
 
 
@@ -34,9 +34,9 @@ typedef enum {
     IBOutlet UIView     *openingView;
     IBOutlet UIView     *menuView;
     IBOutlet UIView     *backgroundView;
-    
+
     BFMainViewState     stateUponLaunch;
-    
+
     // optional context ivars
     NSURL                       *urlLaunchWith;
     BFMainViewDefaultController *defaultController;

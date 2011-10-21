@@ -7,7 +7,7 @@
 //
 
 @protocol BFRemoteBriefSaverDelegate;
-@interface BFRemoteBriefSaver : UIViewController 
+@interface BFRemoteBriefSaver : UIViewController
 {
     IBOutlet UILabel                *promptLabel;
     id<BFRemoteBriefSaverDelegate>  delegate;

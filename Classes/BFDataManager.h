@@ -23,7 +23,7 @@ typedef enum {
 @interface BFDataManager : NSObject
 {
     NSManagedObjectModel			*managedObjectModel;
-    NSManagedObjectContext			*managedObjectContext;	    
+    NSManagedObjectContext			*managedObjectContext;
     NSPersistentStoreCoordinator	*persistentStoreCoordinator;
 }
 

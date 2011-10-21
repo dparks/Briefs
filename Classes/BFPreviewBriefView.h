@@ -9,7 +9,7 @@
 #import "BFSceneView.h"
 #import "BFBriefViewDelegate.h"
 
-@interface BFPreviewBriefView : UIView 
+@interface BFPreviewBriefView : UIView
 {
     IBOutlet id<BFBriefViewDelegate>    delegate;
     IBOutlet UILabel                    *titleLabel;

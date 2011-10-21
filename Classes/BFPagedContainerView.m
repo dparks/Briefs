@@ -11,7 +11,7 @@
 
 @implementation BFPagedContainerView
 
-- (UIView *)hitTest:(CGPoint)point withEvent:(UIEvent *)event 
+- (UIView *)hitTest:(CGPoint)point withEvent:(UIEvent *)event
 {
     if ([self pointInside:point withEvent:event]) {
         return scrollView;

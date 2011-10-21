@@ -15,7 +15,7 @@
 {
     IBOutlet UILabel    *name;
     IBOutlet UILabel    *desc;
-    
+
     BriefRef            *brief;
     UITableViewCell     *cell;
     UINavigationController  *navigation;

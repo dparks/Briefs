@@ -41,7 +41,7 @@
         self.brief = item;
         isSelected = NO;
         isInstallButtonExpanded = NO;
-        
+
         // determine install type
         NSDate *dateBriefLastInstalled = [[BFDataManager sharedBFDataManager] briefFromURLWasInstalledOnDate:self.brief.enclosure.url];
         if (dateBriefLastInstalled == nil)
@@ -50,7 +50,7 @@
             installType = BFBriefCellInstallTypeUpdate;
         else
             installType = BFBriefCellInstallTypeAlreadyInstalled;
-        
+
         // style install/update button
         UIImage *buttonBG;
         switch (installType) {
@@ -61,9 +61,9 @@
                 buttonBG = [[UIImage imageNamed:@"already-button.png"] stretchableImageWithLeftCapWidth:4 topCapHeight:0];
                 break;
             default:
-                buttonBG = [[UIImage imageNamed:@"install-button.png"] stretchableImageWithLeftCapWidth:4 topCapHeight:0];                
+                buttonBG = [[UIImage imageNamed:@"install-button.png"] stretchableImageWithLeftCapWidth:4 topCapHeight:0];
         }
-        
+
         installButtonBg = [[UIImageView alloc] initWithImage:buttonBG];
 
     }
@@ -89,20 +89,20 @@
 - (IBAction)shouldStartDownloadingBrief
 {
     if (!isInstallButtonExpanded) {
-        
-        // if not in download mode, set the 
+
+        // if not in download mode, set the
         // mode to download mode
-        
+
         [self setInstallButtonExpanded:YES];
     }
-    
+
     else {
-        
+
         // if already in download mode, then
         // download the brief to local storage
-        
+
         [self.delegate shouldDownloadBrief:self atURL:brief.enclosure.url];
-        
+
     }
 }
 
@@ -127,14 +127,14 @@
         installButton.frame = kInstallButtonExpandedRect;
         installButtonBg.frame = kInstallButtonBgExpandedRect;
     }
-    
+
     else {
         // unexpand the button
 //        rightAccessoryView.frame = kRightAccessoryNormalRect;
         installButton.frame = kInstallButtonNormalRect;
         installButtonBg.frame = kInstallButtonBgNormalRect;
     }
-    
+
     [UIView commitAnimations];
     isInstallButtonExpanded = expand;
 }
@@ -151,13 +151,13 @@
         NSArray *nibArray = [[NSBundle mainBundle] loadNibNamed:@"BFBriefCellController" owner:self options:nil];
         cell = (UITableViewCell *) [nibArray objectAtIndex:0];
     }
-    
+
     titleLabel.text = self.brief.title;
     indexLabel.text = [NSString stringWithFormat:@"%i", indexPath.row+1];
     descLabel.text = self.brief.content;
-    
+
     [leftAccessoryView addSubview:indexView];
-    
+
     if (installButtonBg != nil) {
 
         CGRect theFrame, theFrameBg;
@@ -167,7 +167,7 @@
                 theFrame = kInstallButtonExpandedRect;
                 theFrameBg = kInstallButtonBgExpandedRect;
                 break;
-                
+
             case BFBriefCellInstallTypeAlreadyInstalled:
                 [installButton setTitle:@"INSTALLED" forState:UIControlStateNormal];
                 installButton.enabled = NO;
@@ -184,47 +184,47 @@
                 theFrameBg = kInstallButtonBgNormalRect;
 
         }
-        
+
         installButtonBg.frame = theFrameBg;
         installButton.frame = theFrame;
-        
-        [cell addSubview:installButtonBg]; 
+
+        [cell addSubview:installButtonBg];
         [cell addSubview:installButton];
     }
-    
+
     return cell;
 }
 
 - (void)tableView:(UITableView *)tv didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     if (!isInstallButtonExpanded) {
-        
+
         // If not in download mode, display (or hide)
         // the remote play controls
-        
+
         [UIView beginAnimations:@"flip-over play controls" context:nil];
         [UIView setAnimationDuration:0.5f];
-        
+
         if (!isSelected) {
             [UIView setAnimationTransition:UIViewAnimationTransitionFlipFromLeft forView:leftAccessoryView cache:YES];
             [leftAccessoryView addSubview:remotePlayView];
             [indexView removeFromSuperview];
         }
-        
+
         else {
             [UIView setAnimationTransition:UIViewAnimationTransitionFlipFromRight forView:leftAccessoryView cache:YES];
             [leftAccessoryView addSubview:indexView];
             [remotePlayView removeFromSuperview];
         }
-        
+
         isSelected = !isSelected;
         [UIView commitAnimations];
     }
-    
+
     else {
-        
+
         // Else, clear out the download mode
-        
+
         [self setInstallButtonExpanded:NO];
     }
 }

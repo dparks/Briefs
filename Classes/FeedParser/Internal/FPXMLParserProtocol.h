@@ -33,7 +33,7 @@
 @protocol FPXMLParserProtocol <NSObject>
 @required
 /*!
-    @method     
+    @method
     @abstract   Take over the delegate role for the NSXMLParser
 	@param parser The NSXMLParser that is currently parsing the document.
     @discussion The implementation of this method must call [parser setDelegate:self]
@@ -42,7 +42,7 @@
 */
 - (void)acceptParsing:(NSXMLParser *)parser;
 /*!
-    @method     
+    @method
     @abstract   Abort parsing
 	@param parser The NSXMLParser that is currently parsing the document.
 	@param description A description of the error that occurred. If no description is known, it will be nil.

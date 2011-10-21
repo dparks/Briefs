@@ -1,4 +1,4 @@
-// 
+//
 //  BriefRef.m
 //  Briefs
 //
@@ -10,7 +10,7 @@
 
 #import "BriefcastRef.h"
 
-@implementation BriefRef 
+@implementation BriefRef
 
 @dynamic dateLastOpened;
 @dynamic author;

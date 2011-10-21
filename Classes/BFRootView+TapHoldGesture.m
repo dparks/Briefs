@@ -15,10 +15,10 @@
 #pragma mark -
 #pragma mark UIView Event Handling
 
-- (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event 
+- (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event
 {
     [self cancelGestureTimer];
-    timer = [NSTimer scheduledTimerWithTimeInterval:0.8f 
+    timer = [NSTimer scheduledTimerWithTimeInterval:0.8f
                                              target:self
                                            selector:@selector(handleTapHoldGesture)
                                            userInfo:nil
@@ -31,13 +31,13 @@
     UITouch *touch = (UITouch *) [touches anyObject];
     CGPoint now = [touch locationInView:self];
     CGPoint then = [touch previousLocationInView:self];
-    
+
     if (abs(now.x - then.x) > 5.0f || abs(now.y - then.y) > 5.0f) {
         [self cancelGestureTimer];
     }
 }
 
-- (void)touchesEnded:(NSSet *)touches withEvent:(UIEvent *)event 
+- (void)touchesEnded:(NSSet *)touches withEvent:(UIEvent *)event
 {
     [self cancelGestureTimer];
 }
@@ -51,19 +51,19 @@
 {
     if (timer != nil) {
         [timer invalidate];
-        timer = nil;    
+        timer = nil;
     }
 }
 
-- (void)handleTapHoldGesture 
+- (void)handleTapHoldGesture
 {
     if (timer != nil) {
         [self cancelGestureTimer];
-        
-        UIActionSheet *sheet = [[UIActionSheet alloc] initWithTitle:@"Do you want to close the Brief?" 
+
+        UIActionSheet *sheet = [[UIActionSheet alloc] initWithTitle:@"Do you want to close the Brief?"
                                                            delegate:self
                                                   cancelButtonTitle:@"Nevermind"
-                                             destructiveButtonTitle:@"Stop the Brief" 
+                                             destructiveButtonTitle:@"Stop the Brief"
                                                   otherButtonTitles:nil];
         sheet.actionSheetStyle = UIActionSheetStyleBlackTranslucent;
         [sheet showInView:self];

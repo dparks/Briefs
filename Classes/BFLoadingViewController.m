@@ -16,34 +16,34 @@
 #pragma mark -
 #pragma mark NSView & NSObject Methods
 
-- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil 
+- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
-    if (nibNameOrNil != nil) 
+    if (nibNameOrNil != nil)
         return [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     else
         return [super initWithNibName:@"BFLoadingViewController" bundle:nibBundleOrNil];
 }
 
-- (id)init 
+- (id)init
 {
     return [self initWithNibName:nil bundle:nil];
 }
 
 // Implement viewDidLoad to do additional setup after loading the view, typically from a nib.
-- (void)viewDidLoad 
+- (void)viewDidLoad
 {
     [super viewDidLoad];
-    
+
 }
 
-- (void)viewDidUnload 
+- (void)viewDidUnload
 {
 	// Release any retained subviews of the main view.
 	// e.g. self.myOutlet = nil;
 }
 
 
-- (void)dealloc 
+- (void)dealloc
 {
     [self.data release];
     [self.locationOfRequest release];
@@ -70,10 +70,10 @@
     self.locationOfRequest = location;
     self.data = [[NSMutableData alloc] initWithLength:0];
     workingStatus = status;
-    
+
     if (initial)
         [statusLabel setText:initial];
-    
+
     NSURLRequest *request = [NSURLRequest requestWithURL:[NSURL URLWithString:location]];
     connection = [[[NSURLConnection alloc] initWithRequest:request delegate:self startImmediately:YES] autorelease];
 }
@@ -91,16 +91,16 @@
 - (void)connection:(NSURLConnection *)connection didReceiveData:(NSData *)nextData
 {
     [self.data appendData:nextData];
-    
+
     [statusLabel setText:workingStatus];
     float progressSoFar = [self.data length] / expectedSizeOfResponse;
-    
+
     // animate stuff
     [progress setProgressValue:progressSoFar animated:YES];
 }
 
 - (void)connectionDidFinishLoading:(NSURLConnection *)connection
-{    
+{
     [statusLabel setText:@"Finished."];
     [self.delegate loadingView:self didCompleteWithData:self.data];
 }

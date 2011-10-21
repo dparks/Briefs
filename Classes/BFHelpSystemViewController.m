@@ -21,13 +21,13 @@
 
 @implementation BFHelpSystemViewController
 
-- (void)viewDidLoad 
+- (void)viewDidLoad
 {
     [super viewDidLoad];
     [self changePage];
 }
 
-- (void)viewDidUnload 
+- (void)viewDidUnload
 {
     [super viewDidUnload];
 
@@ -36,7 +36,7 @@
 }
 
 
-- (void)dealloc 
+- (void)dealloc
 {
     [super dealloc];
 }
@@ -45,20 +45,20 @@
 {
     NSURL *loadURL = nil;
     switch ([pageControl selectedSegmentIndex]) {
-            
+
         case BFHelpSystemAboutSelection:
             loadURL = [NSURL URLWithString:[self fullyReferencedHelpFile:kBFHelpSystemAboutPath]];
             break;
-        
+
         case BFHelpSystemBuildSelection:
             loadURL = [NSURL URLWithString:[self fullyReferencedHelpFile:kBFHelpSystemBuildPath]];
             break;
-            
+
         case BFHelpSystemShareSelection:
             loadURL = [NSURL URLWithString:[self fullyReferencedHelpFile:kBFHelpSystemSharePath]];
             break;
     }
-    
+
     NSURLRequest *urlRequest = [NSURLRequest requestWithURL:loadURL];
     [contentView loadRequest:urlRequest];
 }
@@ -71,22 +71,22 @@
 - (IBAction)emailStarterKit
 {
     UIActionSheet *confirmSheet = [[UIActionSheet alloc] initWithTitle:@"Prepare an email to help get you started?" delegate:self cancelButtonTitle:@"No, thank you." destructiveButtonTitle:nil otherButtonTitles:@"Yes, that would rock!", nil];
-    
+
     [confirmSheet showInView:self.view];
 }
 
-- (void)actionSheet:(UIActionSheet *)actionSheet willDismissWithButtonIndex:(NSInteger)buttonIndex 
+- (void)actionSheet:(UIActionSheet *)actionSheet willDismissWithButtonIndex:(NSInteger)buttonIndex
 {
     if ([actionSheet cancelButtonIndex] != buttonIndex && [MFMailComposeViewController canSendMail]) {
         MFMailComposeViewController *mail = [[MFMailComposeViewController alloc] init];
         [mail setMailComposeDelegate:self];
         [mail setSubject:@"Briefs Starter Kit"];
-        
+
         // add starter kit zip file
         [mail setMessageBody:[self starterKitEmailMessageBody] isHTML:NO];
-        
+
         mail.navigationBar.tintColor = [BFConfig tintColorForNavigationBar];
-        
+
         [self presentModalViewController:mail animated:YES];
     }
 }
@@ -95,7 +95,7 @@
 {
     // TODO: handle that the email was sent
     //       ... or err, not sent.
-    
+
     [controller dismissModalViewControllerAnimated:YES];
 }
 
@@ -107,7 +107,7 @@
 
 - (NSString *)fullyReferencedHelpFile:(NSString *)ref
 {
-    return [NSString stringWithFormat:@"%@%@", kBFHelpSystemDocumentationBasePath, ref]; 
+    return [NSString stringWithFormat:@"%@%@", kBFHelpSystemDocumentationBasePath, ref];
 }
 
 @end

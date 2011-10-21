@@ -29,13 +29,13 @@
     if (self != nil) {
         NSArray *scenes = [dictionary objectForKey:@"scenes"];
         numberOfScenes = (scenes != nil) ? [scenes count] : 0;
-        
+
         pathToBrieflist = path;
         author  = [dictionary objectForKey:@"author" orDefaultValue:@"None provided."];
         desc    = [dictionary objectForKey:@"desc" orDefaultValue:@"None provided."];
-        
+
         NSString *defaultTitle = [path stringByReplacingOccurrencesOfString:@".brieflist" withString:@""];
-        
+
         // test for ($0)$1 file name
         NSArray *fileNameComponents = [defaultTitle componentsSeparatedByString:@")"];
         if ([fileNameComponents count] > 1)
@@ -51,7 +51,7 @@
 - (BriefRef *)insertIntoManagedContext:(NSManagedObjectContext *)context
 {
     BriefRef *ref = (BriefRef *) [NSEntityDescription insertNewObjectForEntityForName:@"BriefRef"                                                                     inManagedObjectContext:context];
-    
+
     return [self mergeInfoIntoBrief:ref];
 }
 
@@ -60,11 +60,11 @@
     [ref setFilePath:pathToBrieflist];
     [ref setTitle:title];
     [ref setTotalNumberOfScenes:[NSNumber numberWithInt:numberOfScenes]];
-    
+
     // TODO: add author, desc information
     [ref setAuthor:author];
     [ref setDesc:desc];
-    
+
     return ref;
 }
 

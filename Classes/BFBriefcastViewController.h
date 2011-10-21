@@ -12,17 +12,17 @@
 #import "BriefcastRef.h"
 #import "BFRemoteBriefViewController.h"
 
-@interface BFBriefcastViewController : BFTableViewController <BFBriefcastEventDelegate, BFLoadingViewDelegate, BFRemoteBriefViewDelegate> 
+@interface BFBriefcastViewController : BFTableViewController <BFBriefcastEventDelegate, BFLoadingViewDelegate, BFRemoteBriefViewDelegate>
 {
     NSMutableArray          *enclosedBriefs;
     NSString                *channelTitle;
     NSString                *channelLink;
     NSString                *channelDescription;
     NSMutableData           *recievedData;
-    
+
     NSString                *locationOfBriefcast;
     BriefcastRef            *briefcast;
-    
+
     // IB Objects
     IBOutlet UILabel                    *titleLabel;
     IBOutlet UILabel                    *locationLabel;

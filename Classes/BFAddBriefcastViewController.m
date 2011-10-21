@@ -18,13 +18,13 @@
 {
     if (self = [super initWithNibName:@"BFAddBriefcastViewController" bundle:nil]) {
         self.title = @"Add Briefcast";
-        
+
         // Configure the save button.
         UIBarButtonItem *saveButton = [[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemSave target:self action:@selector(save)] autorelease];
-        
+
         // Configure the cancel button
         UIBarButtonItem *cancelButton = [[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel target:self action:@selector(cancel)] autorelease];
-        
+
         self.navigationItem.rightBarButtonItem = saveButton;
         self.navigationItem.leftBarButtonItem = cancelButton;
     }
@@ -47,7 +47,7 @@
     NSArray *briefcastDescriptors = [NSArray arrayWithObjects: [[[BFTextCellController alloc] initWithLabel:@"Name"] autorelease],
             [[[BFTextCellController alloc] initWithLabel:@"URL"] autorelease],
             [[[BFTextCellController alloc] initWithLabel:@"Description"] autorelease], nil];
-                                                                        
+
     self.tableGroups = [NSArray arrayWithObjects:briefcastDescriptors, nil];
 }
 
@@ -55,7 +55,7 @@
 {
     if (self.tableGroups != nil) {
         NSArray *cells = [tableGroups objectAtIndex:0];
-        BFBriefcast *briefcast = [[[BFBriefcast alloc] initWithName:[[cells objectAtIndex:0] savedValue] 
+        BFBriefcast *briefcast = [[[BFBriefcast alloc] initWithName:[[cells objectAtIndex:0] savedValue]
             andURL:[[cells objectAtIndex:1] savedValue]] autorelease];
         briefcast.description = [[cells objectAtIndex:2] savedValue];
         return briefcast;
@@ -63,24 +63,24 @@
     else return nil;
 }
 
-- (void)didReceiveMemoryWarning 
+- (void)didReceiveMemoryWarning
 {
     // Releases the view if it doesn't have a superview.
     [super didReceiveMemoryWarning];
-    
+
     // Release any cached data, images, etc that aren't in use.
 }
 
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    
+
     self.navigationController.navigationBar.tintColor = [BFConfig tintColorForNavigationBar];
     self.view.backgroundColor = [BFConfig backgroundForTableView];
     //self.view.separatorColor = [UIColor colorWithRed:0.7667f green:0.7784f blue:0.7902f alpha:1.0f];
 }
 
-- (void)viewDidUnload 
+- (void)viewDidUnload
 {
     self.delegate = nil;
     [super viewDidUnload];

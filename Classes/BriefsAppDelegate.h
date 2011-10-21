@@ -8,7 +8,7 @@
 
 #define kBFHasLaunchedBefore        @"App has Launched"
 
-@interface BriefsAppDelegate : NSObject <UIApplicationDelegate, UINavigationControllerDelegate> 
+@interface BriefsAppDelegate : NSObject <UIApplicationDelegate, UINavigationControllerDelegate>
 {
     UINavigationController          *navigationController;
     UIWindow                        *window;

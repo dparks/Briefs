@@ -10,11 +10,11 @@
 #import "BFCellController.h"
 #import "BriefcastRef.h"
 
-@interface BFBriefcastCellController : NSObject<BFCellController> 
+@interface BFBriefcastCellController : NSObject<BFCellController>
 {
     IBOutlet UILabel    *titleLabel;
     IBOutlet UILabel    *descLabel;
-    
+
     BriefcastRef            *briefcast;
     UINavigationController  *delegate;
 }

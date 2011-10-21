@@ -51,47 +51,47 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(BFDataManager);
     // look for manually installed Briefs
     // and copy them into the documents
     // directory with the rest of the briefs
-    
+
     // TODO: Make this run on first load only.
     NSString *bundleDirectory = [[NSBundle mainBundle] resourcePath];
     NSDirectoryEnumerator *enumerator = [[NSFileManager defaultManager] enumeratorAtPath:bundleDirectory];
     NSString *next;
-    
+
     while (next = [enumerator nextObject]) {
         // Only move briefs
         if ([[next pathExtension] isEqualToString:@"brieflist"]) {
             NSString *newPath = [[self documentDirectory] stringByAppendingPathComponent:next];
             NSString *oldPath = [bundleDirectory stringByAppendingPathComponent:next];
             NSError *error = [[NSError alloc] init];
-            
+
             // check if already installed,
             // do not add it to the datastore if it already exists.
             if (![[NSFileManager defaultManager] fileExistsAtPath:newPath isDirectory:NO]) {
 
                 // copy the brief
                 if([[NSFileManager defaultManager] copyItemAtPath:oldPath toPath:newPath error:&error]) {
-                    
+
                     // if copy was successful, then add it to the database
                     BriefRef *briefRef = [self addBriefAtPath:next fromURL:kBFLocallyStoredBriefURLString];
                     [briefRef setBriefcast:[self localBriefcastRefMarker]];
-                    
+
                     // Save the context
                     if (![managedObjectContext save:&error]) {
                         NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
                     }
-                    
-                    
+
+
                 }
-                
+
                 else
                     // If not, throw an error, dude.
                     NSLog(@"ERROR! - %@", error);
             }
-            
+
             [error release];
         }
     }
-    
+
 }
 
 - (void)save
@@ -102,12 +102,12 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(BFDataManager);
         if ([managedObjectContext hasChanges] && ![managedObjectContext save:&error]) {
 			/*
 			 Replace this implementation with code to handle the error appropriately.
-			 
+
 			 abort() causes the application to generate a crash log and terminate. You should not use this function in a shipping application, although it may be useful during development. If it is not possible to recover from the error, display an alert panel that instructs the user to quit the application by pressing the Home button.
 			 */
 			NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
 			abort();
-        } 
+        }
     }
 }
 
@@ -116,7 +116,7 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(BFDataManager);
     [managedObjectContext release];
     [managedObjectModel release];
     [persistentStoreCoordinator release];
-    
+
     [super dealloc];
 }
 
@@ -128,12 +128,12 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(BFDataManager);
  Returns the managed object context for the application.
  If the context doesn't already exist, it is created and bound to the persistent store coordinator for the application.
  */
-- (NSManagedObjectContext *)managedObjectContext 
+- (NSManagedObjectContext *)managedObjectContext
 {
     if (managedObjectContext != nil) {
         return managedObjectContext;
     }
-	
+
     NSPersistentStoreCoordinator *coordinator = [self persistentStoreCoordinator];
     if (coordinator != nil) {
         managedObjectContext = [[NSManagedObjectContext alloc] init];
@@ -147,12 +147,12 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(BFDataManager);
  Returns the managed object model for the application.
  If the model doesn't already exist, it is created by merging all of the models found in the application bundle.
  */
-- (NSManagedObjectModel *)managedObjectModel 
-{	
+- (NSManagedObjectModel *)managedObjectModel
+{
     if (managedObjectModel != nil) {
         return managedObjectModel;
     }
-    managedObjectModel = [[NSManagedObjectModel mergedModelFromBundles:nil] retain];    
+    managedObjectModel = [[NSManagedObjectModel mergedModelFromBundles:nil] retain];
     return managedObjectModel;
 }
 
@@ -161,22 +161,22 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(BFDataManager);
  Returns the persistent store coordinator for the application.
  If the coordinator doesn't already exist, it is created and the application's store added to it.
  */
-- (NSPersistentStoreCoordinator *)persistentStoreCoordinator 
-{	
+- (NSPersistentStoreCoordinator *)persistentStoreCoordinator
+{
     if (persistentStoreCoordinator != nil) {
         return persistentStoreCoordinator;
     }
-	
+
     NSURL *storeUrl = [NSURL fileURLWithPath:[self locationOfDataStore]];
-	
+
 	NSError *error = nil;
     persistentStoreCoordinator = [[NSPersistentStoreCoordinator alloc] initWithManagedObjectModel:[self managedObjectModel]];
     if (![persistentStoreCoordinator addPersistentStoreWithType:NSSQLiteStoreType configuration:nil URL:storeUrl options:nil error:&error]) {
 		/*
 		 Replace this implementation with code to handle the error appropriately.
-		 
+
 		 abort() causes the application to generate a crash log and terminate. You should not use this function in a shipping application, although it may be useful during development. If it is not possible to recover from the error, display an alert panel that instructs the user to quit the application by pressing the Home button.
-		 
+
 		 Typical reasons for an error here include:
 		 * The persistent store is not accessible
 		 * The schema for the persistent store is incompatible with current managed object model
@@ -184,8 +184,8 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(BFDataManager);
 		 */
 		NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
 		abort();
-    }    
-	
+    }
+
     return persistentStoreCoordinator;
 }
 
@@ -195,10 +195,10 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(BFDataManager);
 #pragma mark Add / Insert API
 
 - (void)addBriefcastInformation:(BFBriefcast *)briefcast
-{    
+{
     // Create and configure a new instance of the Event entity
 	[briefcast insertIntoManagedContext:[self managedObjectContext]];
-    
+
     // Save the context
     NSError *error;
     if (![[self managedObjectContext] save:&error]) {
@@ -209,34 +209,34 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(BFDataManager);
 - (BriefRef *)addBriefAtPath:(NSString *)path usingData:(NSData *)data fromURL:(NSString *)url
 {
     NSString *destination = [[self documentDirectory] stringByAppendingPathComponent:path];
-    
+
     // check to see if the brief already exists
     // if it doesn't, add it the regular way
-    
+
     BriefRef *brief = [self findBriefUsingURL:url];
     if (brief == nil) {
-        
+
         // check to see if a file exists at that path
         // if so, alter the incoming file path to avoid
         // overwriting data
-        
+
         if ([[NSFileManager defaultManager] fileExistsAtPath:destination isDirectory:NO]) {
-            
+
             // Meh. This is ugly. Desperately needs refactoring.
             NSString *alteredURL = [[[url stringByReplacingOccurrencesOfString:@".brieflist" withString:@""]
-                                    stringByReplacingOccurrencesOfString:@"http://" withString:@""] 
+                                    stringByReplacingOccurrencesOfString:@"http://" withString:@""]
                                     stringByReplacingOccurrencesOfString:@"/" withString:@"_"];
             path = [NSString stringWithFormat:@"(%@)%@", alteredURL, path];
             NSString *newDestination = [[self documentDirectory] stringByAppendingPathComponent:path];
-            
+
             [data writeToFile:newDestination atomically:YES];
         }
         else [data writeToFile:destination atomically:YES];
-        
+
         return [self addBriefAtPath:path fromURL:url];
-        
+
     }
-    
+
     // else, get the reference and update it's download date
     else {
         return [self updateBrief:brief usingData:data];
@@ -248,22 +248,22 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(BFDataManager);
     // NOTE: This signature is only called by self, when the
     //       brief is already stored on the file system.
     //       (i.e., only internally by the data manager)
-    
+
     NSString *destination = [[self documentDirectory] stringByAppendingPathComponent:path];
     NSDictionary *dictionary = [NSDictionary dictionaryWithContentsOfFile:destination];
-    
+
     BFBriefInfo *info = [BFBriefInfo infoForBriefData:dictionary atPath:path];
     BriefRef *newRef = [info insertIntoManagedContext:[self managedObjectContext]];
     [newRef setDateLastDownloaded:[NSDate date]];
     [newRef setFromURL:url];
-    
-    
+
+
     // Save the context
     NSError *error;
     if (![[self managedObjectContext] save:&error]) {
         NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
     }
-    
+
     return newRef;
 }
 
@@ -274,11 +274,11 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(BFDataManager);
     brief = [info mergeInfoIntoBrief:brief];
     [brief setDateLastDownloaded:[NSDate date]];
     [self save];
-    
+
     // write the new file
     NSString *destination = [[self documentDirectory] stringByAppendingPathComponent:brief.filePath];
     [data writeToFile:destination atomically:YES];
-    
+
     return brief;
 }
 
@@ -287,9 +287,9 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(BFDataManager);
 #pragma mark Remove API
 
 - (void)removeBrief:(BriefRef *)brief
-{   
+{
     NSError *error;
-    
+
     // Remove the brief's binary file
     NSString *pathToBrief = [[self documentDirectory] stringByAppendingPathComponent:[brief filePath]];
     if ([[NSFileManager defaultManager] fileExistsAtPath:pathToBrief isDirectory:NO]) {
@@ -297,7 +297,7 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(BFDataManager);
             NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
         }
     }
-    
+
     // Remove it from the database
     [[self managedObjectContext] deleteObject:brief];
     if (![[self managedObjectContext] save:&error]) {
@@ -312,10 +312,10 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(BFDataManager);
     for (BriefRef *brief in [briefcast briefs]) {
         [self removeBrief:brief];
     }
-    
+
     // delete the reference to the briefcast
     [[self managedObjectContext] deleteObject:briefcast];
-    
+
     NSError *error;
     if (![[self managedObjectContext] save:&error]) {
         // Handle the error.
@@ -329,31 +329,31 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(BFDataManager);
 - (NSArray *)allBriefcastsSortedAs:(BFDataManagerSortType)typeOfSort
 {
     return [self briefcastsSortedAs:typeOfSort limitTo:-1];
-}    
+}
 
-- (NSArray *)briefcastsSortedAs:(BFDataManagerSortType)typeOfSort limitTo:(int)limit 
+- (NSArray *)briefcastsSortedAs:(BFDataManagerSortType)typeOfSort limitTo:(int)limit
 {
     // Build predicate to locate marker
     NSPredicate *predicate = [NSPredicate predicateWithFormat:@"fromURL <> %@", kBFLocallyStoredBriefURLString];
-    
+
     // TODO: implement sorting types
     //       defaults to lasted opened for now
     NSSortDescriptor *sort = [[NSSortDescriptor alloc] initWithKey:@"dateLastOpened" ascending:NO];
     NSArray *sortDescriptors = [NSArray arrayWithObjects:sort, nil];
     [sort release];
-    
+
     NSMutableArray *arrayOfBriefcasts = [NSMutableArray array];
-    
+
     // Fetch Data from the database
 	NSFetchRequest *request = [[NSFetchRequest alloc] init];
 	NSEntityDescription *entity = [NSEntityDescription entityForName:@"BriefcastRef" inManagedObjectContext:[self managedObjectContext]];
 	[request setEntity:entity];
     [request setPredicate:predicate];
     [request setSortDescriptors:sortDescriptors];
-    
+
     // handle limit
     if (limit > 0) [request setFetchLimit:limit];
-    
+
     NSError *error;
     NSMutableArray *mutableFetchResults = [[managedObjectContext executeFetchRequest:request error:&error] mutableCopy];
 	if (mutableFetchResults == nil) {
@@ -362,14 +362,14 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(BFDataManager);
         [request release];
         return nil;
 	}
-    
+
     for (BriefcastRef *ref in mutableFetchResults) {
         [arrayOfBriefcasts addObject:ref];
     }
-    
+
 	[mutableFetchResults release];
 	[request release];
-    
+
     return arrayOfBriefcasts;
 }
 
@@ -393,16 +393,16 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(BFDataManager);
     NSSortDescriptor *sort = [[NSSortDescriptor alloc] initWithKey:@"dateLastOpened" ascending:NO];
     NSArray *sortDescriptors = [NSArray arrayWithObjects:sort, nil];
     [sort release];
-    
+
     // Fetch Data from the database
 	NSFetchRequest *request = [[NSFetchRequest alloc] init];
 	NSEntityDescription *entity = [NSEntityDescription entityForName:@"BriefRef" inManagedObjectContext:[self managedObjectContext]];
 	[request setEntity:entity];
     [request setSortDescriptors:sortDescriptors];
-    
+
     // handle limit
     if (limit > 0) [request setFetchLimit:limit];
-    
+
     NSError *error;
     NSMutableArray *mutableFetchResults = [[managedObjectContext executeFetchRequest:request error:&error] mutableCopy];
 	if (mutableFetchResults == nil) {
@@ -411,84 +411,84 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(BFDataManager);
         [request release];
         return nil;
 	}
-    
+
     for (BriefRef *ref in mutableFetchResults) {
         [arrayOfBriefs addObject:ref];
     }
-    
+
 	[mutableFetchResults release];
 	[request release];
-    
+
     return [[[BFArrayBriefDataSource alloc] initWithArray:arrayOfBriefs] autorelease];
 }
 
 - (BriefcastRef *)localBriefcastRefMarker
 {
     BriefcastRef *refToReturn;
-    
+
     // Build predicate to locate marker
     NSPredicate *predicate = [NSPredicate predicateWithFormat:@"fromURL == %@", kBFLocallyStoredBriefURLString];
-    
+
     // Fetch Data from the database
 	NSFetchRequest *request = [[NSFetchRequest alloc] init];
 	NSEntityDescription *entity = [NSEntityDescription entityForName:@"BriefcastRef" inManagedObjectContext:[self managedObjectContext]];
 	[request setEntity:entity];
     [request setPredicate:predicate];
-    
+
     NSError *error;
     NSMutableArray *mutableFetchResults = [[managedObjectContext executeFetchRequest:request error:&error] mutableCopy];
 	if (mutableFetchResults == nil || [mutableFetchResults count] <= 0) {
-        
+
         // Marker does not exist
-        BriefcastRef *ref = (BriefcastRef *) [NSEntityDescription insertNewObjectForEntityForName:@"BriefcastRef" 
+        BriefcastRef *ref = (BriefcastRef *) [NSEntityDescription insertNewObjectForEntityForName:@"BriefcastRef"
                                                                            inManagedObjectContext:[self managedObjectContext]];
-        
+
         [ref setFromURL:kBFLocallyStoredBriefURLString];
         [ref setTitle:@"Local Briefs"];
         [ref setDesc:@"This contains briefs that did not originate from a briefcast and are stored locally on the device."];
-        
+
         // Save the context
         NSError *error;
         if (![[self managedObjectContext] save:&error]) {
             NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
         }
-        
+
         refToReturn = ref;
 	}
-    
+
     else refToReturn = (BriefcastRef *) [mutableFetchResults objectAtIndex:0];
-    
+
     [request release];
     [mutableFetchResults release];
-    
+
     return refToReturn;
-    
+
 }
 
 - (BriefRef *)findBriefUsingURL:(NSString *)url
 {
     NSPredicate *predicate = [NSPredicate predicateWithFormat:@"fromURL == %@", url];
-    
+
     // Fetch Data from the database
 	NSFetchRequest *request = [[NSFetchRequest alloc] init];
 	NSEntityDescription *entity = [NSEntityDescription entityForName:@"BriefRef" inManagedObjectContext:[self managedObjectContext]];
 	[request setEntity:entity];
     [request setPredicate:predicate];
-    
+
     NSError *error;
     NSMutableArray *mutableFetchResults = [[managedObjectContext executeFetchRequest:request error:&error] mutableCopy];
 	if (mutableFetchResults == nil || [mutableFetchResults count] <= 0) {
         if (mutableFetchResults) [mutableFetchResults release];
         [request release];
-        
+
         return nil;
 	}
-    
+
     BriefRef *refToReturn = (BriefRef *) [mutableFetchResults objectAtIndex:0];
-    
+
     [request release];
     [mutableFetchResults release];
-    
+
     return refToReturn;
 }
 

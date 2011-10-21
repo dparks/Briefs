@@ -27,23 +27,23 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    
+
     // style view
     self.title = @"Briefcasts";
     self.navigationController.navigationBar.tintColor = [BFConfig tintColorForNavigationBar];
     self.tableView.backgroundColor = [UIColor clearColor];
     self.tableView.separatorColor = [BFConfig separatorColorForTableView];
     tableFooterView.alpha = 0.0;
-    
+
     // Edit button
-    UIBarButtonItem *editButton = [[[UIBarButtonItem alloc] initWithTitle:@"Edit" 
+    UIBarButtonItem *editButton = [[[UIBarButtonItem alloc] initWithTitle:@"Edit"
                                                                     style:UIBarButtonItemStylePlain
-                                                                   target:self 
+                                                                   target:self
                                                                    action:@selector(editBriefcasts)] autorelease];
     self.navigationItem.rightBarButtonItem = editButton;
 }
 
-- (void)viewWillAppear:(BOOL)animated 
+- (void)viewWillAppear:(BOOL)animated
 {
     [self updateAndReload];
 }
@@ -56,18 +56,18 @@
 - (void)constructTableGroups
 {
     NSMutableArray *allControllers = [NSMutableArray array];
-    
+
     NSArray *knownBriefcasts = [[BFDataManager sharedBFDataManager] allBriefcastsSortedAs:BFDataManagerSortByDateOpened];
     for (BriefcastRef *ref in knownBriefcasts) {
         // add briefcast cell
         BFBriefcastCellController *controller = [[[BFBriefcastCellController alloc] initWithBriefcast:ref] autorelease];
         [allControllers addObject:controller];
     }
-    
+
     // show footer if there are no briefcasts listed
 //    if ([knownBriefcasts count] <= 0)
 //        tableFooterView.alpha = 1.0f;
-    
+
     self.tableGroups = [NSArray arrayWithObjects:allControllers, nil];
 }
 
@@ -112,7 +112,7 @@
         self.navigationItem.rightBarButtonItem.title = @"Done";
         self.navigationItem.rightBarButtonItem.style = UIBarButtonItemStyleDone;
         [self.navigationItem setHidesBackButton:YES animated:YES];
-        
+
         UIBarButtonItem *addButton = [[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd
                                                                                     target:self
                                                                                     action:@selector(addBriefcast)] autorelease];
@@ -156,7 +156,7 @@
     NSArray *builtInArray = [dataManager briefsFromBriefcast:[dataManager localBriefcastRefMarker] sortedAs:BFDataManagerSortByDateOpened];
     BFArrayBriefDataSource *builtinBriefs = [[BFArrayBriefDataSource alloc] initWithArray:builtInArray];
     [self.navigationController pushViewController:[[[BFPagedBrowseViewController alloc] initWithDataSource:builtinBriefs isLocal:YES] autorelease] animated:YES];
-    
+
     [builtinBriefs release];
 }
 

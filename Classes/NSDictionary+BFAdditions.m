@@ -21,12 +21,12 @@
 {
     CFStringRef errorString;
     CFPropertyListRef propertyListRef = CFPropertyListCreateFromXMLData (kCFAllocatorDefault, (CFDataRef) data, kCFPropertyListImmutable, &errorString);
-    
+
     if (errorString != NULL) {
-        NSLog(@"The following error occured while converting the incoming data: %@", errorString); 
+        NSLog(@"The following error occured while converting the incoming data: %@", errorString);
         return nil;
     }
-    
+
     else return (NSDictionary *) propertyListRef;
 }
 

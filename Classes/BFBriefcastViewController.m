@@ -14,7 +14,7 @@
 
 
 
-@interface BFBriefcastViewController (PrivateMethods) 
+@interface BFBriefcastViewController (PrivateMethods)
 
 - (void)dismissLoadingViewAnimation:(UIView *)loadingView;
 
@@ -39,13 +39,13 @@
         self.channelTitle = nil;
         [super updateAndReload];
     }
-    
-    // Display "loading..." message and a spinner        
+
+    // Display "loading..." message and a spinner
     self.title = @"None";
-    titleLabel.text = @"Loading...";        
+    titleLabel.text = @"Loading...";
     self.recievedData = [[NSMutableData alloc] initWithLength:0];
     [spinner startAnimating];
-    
+
     // Load Briefcast url
     NSURLRequest *request = [NSURLRequest requestWithURL:[NSURL URLWithString:[self locationOfBriefcast]]];
     [[[NSURLConnection alloc] initWithRequest:request delegate:self startImmediately:YES] autorelease];
@@ -56,32 +56,32 @@
 #pragma mark BFRemoteBriefEventDelegate Methods
 
 - (void)shouldDownloadBrief:(id)sender atURL:(NSString *)url
-{    
+{
     BFLoadingViewController *loading = [[BFLoadingViewController alloc] init];
     [loading view].frame = CGRectOffset([loading view].frame, 0, 72);
     [loading setDelegate:self];
-    
+
     [UIView beginAnimations:@"load loader animation" context:nil];
         [loading view].alpha = 0.0f;
         [self.view addSubview:[loading view]];
         [loading view].alpha = 1.0f;
     [UIView commitAnimations];
-    
+
     [loading load:url withStatus:@"Trying on a new pair..."];
-    
+
 }
 
 - (void)shouldLaunchBrief:(id)sender atURL:(NSString *)url
 {
     [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleBlackTranslucent];
-    
+
     BFRemoteBriefViewController *remote = [[BFRemoteBriefViewController alloc] initWithLocationOfBrief:url];
     [remote setDelegate:self];
     [remote setModalTransitionStyle:UIModalTransitionStyleCrossDissolve];
     [self presentModalViewController:remote animated:YES];
-    
+
     self.modalViewController.view.frame = CGRectMake(0.0, 0.0, 320.0f, 480.0f);
-    
+
     [remote release];
 }
 
@@ -95,13 +95,13 @@
 
         // if the user opts to save the brief,
         // include the briefcast information
-        
+
         [savedBrief setBriefcast:self.briefcast];
         [[BFDataManager sharedBFDataManager] save];
-        
+
         [self updateAndReload];
-    }    
-    
+    }
+
     [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleDefault];
     [self dismissModalViewControllerAnimated:YES];
 }
@@ -117,7 +117,7 @@
     BriefRef *ref = [[BFDataManager sharedBFDataManager] addBriefAtPath:remoteNameOfBrief usingData:data fromURL:[controller locationOfRequest]];
     [ref setBriefcast:briefcast];
     [[BFDataManager sharedBFDataManager] save];
-    
+
     [self performSelector:@selector(dismissLoadingViewAnimation:) withObject:[controller view] afterDelay:1.0f];
 }
 
@@ -149,7 +149,7 @@
     [UIView setAnimationDidStopSelector:@selector(fadeLoadingViewDidStop:finished:context:)];
     loadingView.alpha = 0.0f;
     [UIView commitAnimations];
-    
+
     [self updateAndReload];
 }
 
@@ -162,37 +162,37 @@
 {
     if (self.channelTitle != nil) {
         NSMutableArray *groups = [NSMutableArray arrayWithCapacity:[self.enclosedBriefs count]];
-        
+
         // TODO: Look at currently stored briefs, offering different states
         //       if the brief is already installed (update if new, no action if not)
-        
+
         for (FPItem *item in self.enclosedBriefs) {
             BFBriefCellController *controller = [[BFBriefCellController alloc] initWithEnclosure:item];
             controller.delegate = self;
             [groups addObject:controller];
             [controller release];
         }
-        
+
         self.tableGroups = [NSArray arrayWithObjects:groups, nil];
     }
-    
+
 }
 
-- (void)viewDidLoad 
+- (void)viewDidLoad
 {
     [super viewDidLoad];
     self.navigationController.navigationBar.tintColor = [BFConfig tintColorForNavigationBar];
-    
-    if (briefcast) 
+
+    if (briefcast)
         self.locationOfBriefcast = [briefcast fromURL];
-    
+
     if (self.locationOfBriefcast != nil) {
         [self reloadBriefcast];
     }
 }
 
 
-- (void)dealloc 
+- (void)dealloc
 {
     [self.channelLink release];
     [self.channelTitle release];
@@ -214,35 +214,35 @@
 }
 
 - (void)connectionDidFinishLoading:(NSURLConnection *)connection
-{    
+{
     NSError *error = [[[NSError alloc] init] autorelease];
     FPFeed *feed = [FPParser parsedFeedWithData:self.recievedData error:&error];
-    
+
     self.channelTitle = [feed title];
     self.channelLink = [[feed link] href];
-    self.channelDescription = [feed feedDescription];    
+    self.channelDescription = [feed feedDescription];
     self.enclosedBriefs = [feed items];
-    
+
     // Update the UI
     [UIView beginAnimations:@"Fade-in Info" context:nil];
         self.title = [NSString stringWithFormat:@"%i Briefs", [[feed items] count]];
-    
+
         // alter the UI
         titleLabel.text = self.channelTitle;
         locationLabel.text = self.channelLink;
-        
+
         // fade back in the controls
         titleLabel.alpha = 1.0f;
         locationLabel.alpha = 1.0f;
         buttonView.alpha = 1.0f;
-    
+
     [UIView commitAnimations];
-    
+
     // update the briefcast reference
     self.briefcast.totalNumberOfBriefcasts = [NSNumber numberWithInt:[[feed items] count]];
     self.briefcast.dateLastOpened = [NSDate date];
     [[BFDataManager sharedBFDataManager] save];
-    
+
     [super updateAndReload];
     [spinner stopAnimating];
 }

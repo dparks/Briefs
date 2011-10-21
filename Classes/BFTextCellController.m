@@ -22,7 +22,7 @@
     return self;
 }
 
-- (void)dealloc 
+- (void)dealloc
 {
     [self.labelText release];
     [self.savedValue release];
@@ -39,7 +39,7 @@
     if (cell == nil) {
         CGRect cellFrame = CGRectMake(0, 0, 300, 45);
         CGRect textFrame = CGRectMake(20, 10, 280, 25);
-        
+
         cell = [[[UITableViewCell alloc] initWithFrame:cellFrame reuseIdentifier:@"TextCell"] autorelease];
         UITextField *textField = [[UITextField alloc] initWithFrame:textFrame];
         textField.placeholder = self.labelText;
@@ -48,11 +48,11 @@
         [textField addTarget:self action:@selector(textChanged:) forControlEvents:UIControlEventEditingChanged];
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
     }
-    
+
     return cell;
 }
 
-- (void)textChanged:(UITextField *)source 
+- (void)textChanged:(UITextField *)source
 {
     if (![self.savedValue isEqual:source.text]) {
         self.savedValue = source.text;

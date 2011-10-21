@@ -8,7 +8,7 @@
 
 #import "BriefRef.h"
 
-@interface BFBriefInfo : NSObject 
+@interface BFBriefInfo : NSObject
 {
     NSString    *title;
     NSString    *desc;

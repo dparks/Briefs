@@ -10,7 +10,7 @@
 
 @class BriefcastRef;
 
-@interface BriefRef :  NSManagedObject  
+@interface BriefRef :  NSManagedObject
 {
 }
 

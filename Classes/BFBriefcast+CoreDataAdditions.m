@@ -17,15 +17,15 @@
     if (self != nil) {
         self.description = [aRef desc];
     }
-    
+
     return self;
 }
 
 - (void)insertIntoManagedContext:(NSManagedObjectContext *)context
 {
-    BriefcastRef *ref = (BriefcastRef *) [NSEntityDescription insertNewObjectForEntityForName:@"BriefcastRef" 
+    BriefcastRef *ref = (BriefcastRef *) [NSEntityDescription insertNewObjectForEntityForName:@"BriefcastRef"
                                                                        inManagedObjectContext:context];
-    
+
     [ref setFromURL:self.url];
     [ref setTitle:self.title];
     [ref setDesc:self.description];

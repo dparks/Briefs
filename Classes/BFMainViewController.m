@@ -33,7 +33,7 @@
 #pragma mark -
 #pragma mark NSObject Methods
 
-- (id)initWithState:(BFMainViewState)state 
+- (id)initWithState:(BFMainViewState)state
 {
     self = [super initWithNibName:@"BFMainViewController" bundle:nil];
     if (self != nil) {
@@ -42,17 +42,17 @@
     return self;
 }
 
-- (id)initWithExternalURL:(NSURL *)url 
+- (id)initWithExternalURL:(NSURL *)url
 {
     self = [self initWithState:BFMainViewOpenedByURL];
     if (self != nil) {
         urlLaunchWith = url;
     }
-    
+
     return self;
 }
 
-- (void)dealloc 
+- (void)dealloc
 {
     [super dealloc];
 }
@@ -61,16 +61,16 @@
 #pragma mark -
 #pragma mark NSViewController Methods
 
-- (void)viewDidLoad 
+- (void)viewDidLoad
 {
     [super viewDidLoad];
     self.navigationController.navigationBar.tintColor = [BFConfig tintColorForNavigationBar];
     self.title = @"Welcome";
-    
+
     // Help button
-    UIBarButtonItem *helpButton = [[[UIBarButtonItem alloc] initWithTitle:@"Help" 
+    UIBarButtonItem *helpButton = [[[UIBarButtonItem alloc] initWithTitle:@"Help"
                                                                     style:UIBarButtonItemStylePlain
-                                                                   target:self 
+                                                                   target:self
                                                                    action:@selector(launchHelpSystem)] autorelease];
     self.navigationItem.rightBarButtonItem = helpButton;
 }
@@ -78,64 +78,64 @@
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-    
+
     switch (stateUponLaunch) {
         case BFMainViewOpenedByURL:
-            
+
             if ([[urlLaunchWith scheme] isEqualToString:@"brief"]) {
                 NSString *modifiedRequestString = [[urlLaunchWith absoluteString] stringByReplacingOccurrencesOfString:@"brief://" withString:@"http://"];
                 [self shouldLaunchBrief:self atURL:modifiedRequestString];
             }
-            
+
             else if ([[urlLaunchWith scheme] isEqualToString:@"briefcast"]) {
-                NSString *modifiedRequestString = [[urlLaunchWith absoluteString] stringByReplacingOccurrencesOfString:@"briefcast://" withString:@"http://"];                
+                NSString *modifiedRequestString = [[urlLaunchWith absoluteString] stringByReplacingOccurrencesOfString:@"briefcast://" withString:@"http://"];
                 BFBriefcastViewController *viewer = [[BFBriefcastViewController alloc] initWithNibName:@"BFBriefcastViewController" bundle:nil];
                 viewer.locationOfBriefcast = modifiedRequestString;
-                
+
                 // launch briefcast view
                 [self.navigationController pushViewController:viewer animated:YES];
-                
+
                 [viewer release];
             }
-            
+
             stateUponLaunch = BFMainViewDefaultState;
             break;
-            
+
         case BFMainViewClosedWhilePlayingBrief:
-            
+
             // TODO: Offer to re-open brief that was disrupted
-            
+
             stateUponLaunch = BFMainViewDefaultState;
             break;
-        
+
         case BFMainViewNoDataToDisplay:
-            
+
             // TODO: Explain how to find a briefcast
             break;
-        
+
         case BFMainViewFirstTimeOpened:
-            
+
             // TODO: Display the welcome screens
             break;
-            
+
         case BFMainViewDefaultState:
             if (menuView.frame.origin.y <= 480.0f)
                 [self showMenuWithAnimation];
-            
+
             // Display recent briefs/briefcasts
             if (defaultController == nil) {
                 defaultController = [[BFMainViewDefaultController alloc] initWithNavController:self.navigationController];
                 defaultController.view.frame = CGRectOffset(defaultController.view.frame, 0, 0.0f);
                 [self.view addSubview:defaultController.view];
             }
-            
+
             else [defaultController viewWillAppear:YES];
-            
+
             break;
     }
 }
 
-- (void)viewDidUnload 
+- (void)viewDidUnload
 {
 	// Release any retained subviews of the main view.
 	// e.g. self.myOutlet = nil;
@@ -151,7 +151,7 @@
     [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleDefault];
     [savedBrief setBriefcast:[[BFDataManager sharedBFDataManager] localBriefcastRefMarker]];
     [[BFDataManager sharedBFDataManager] save];
-    
+
     [self dismissModalViewControllerAnimated:YES];
     [self showMenuWithAnimation];
 }
@@ -159,12 +159,12 @@
 - (void)shouldLaunchBrief:(id)sender atURL:(NSString *)url
 {
     [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleBlackTranslucent animated:YES];
-    
+
     BFRemoteBriefViewController *remote = [[BFRemoteBriefViewController alloc] initWithLocationOfBrief:url];
     [remote setDelegate:self];
     [remote setModalTransitionStyle:UIModalTransitionStyleCrossDissolve];
     [self presentModalViewController:remote animated:YES];
-    
+
     self.modalViewController.view.frame = CGRectMake(0.0, 0.0, 320.0f, 480.0f);
     [remote release];
 }
@@ -188,19 +188,19 @@
     [UIView setAnimationCurve:UIViewAnimationCurveEaseInOut];
     CGSize size = menuView.frame.size;
     menuView.frame = CGRectMake(0.0f, 480.0f, size.width, size.height);
-    
+
     [UIView commitAnimations];
 }
 
-- (void)showMenuWithAnimation 
+- (void)showMenuWithAnimation
 {
     // push up the menu view
     [UIView beginAnimations:@"MenuSlideUpTransition" context:nil];
     [UIView setAnimationDuration:0.3f];
-    [UIView setAnimationCurve:UIViewAnimationCurveEaseInOut];    
+    [UIView setAnimationCurve:UIViewAnimationCurveEaseInOut];
     CGSize size = menuView.frame.size;
     menuView.frame = CGRectMake(0.0f, 291.0f, size.width, size.height);
-    
+
     [UIView commitAnimations];
 }
 
@@ -213,9 +213,9 @@
 - (void)_loadBriefsBrowser
 {
     // TODO: Eventually replace this with a means to select
-    //       briefs and drill-down based upon briefcast 
+    //       briefs and drill-down based upon briefcast
     //       (or other folder level organization)
-    
+
     BFArrayBriefDataSource *knownBriefs = [[BFDataManager sharedBFDataManager] allBriefsSortedAs:BFDataManagerSortByDateOpened];
     [self.navigationController pushViewController:[[[BFPagedBrowseViewController alloc] initWithDataSource:knownBriefs] autorelease] animated:YES];
 

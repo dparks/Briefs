@@ -16,20 +16,20 @@
 #pragma mark -
 #pragma mark NSView & NSObject Methods
 
-- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil 
+- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
-    if (nibNameOrNil != nil) 
+    if (nibNameOrNil != nil)
         return [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     else
         return [super initWithNibName:@"BFRemoteBriefSaver" bundle:nibBundleOrNil];
 }
 
-- (id)init 
+- (id)init
 {
     return [self initWithNibName:nil bundle:nil];
 }
 
-- (void)dealloc 
+- (void)dealloc
 {
     [super dealloc];
 }

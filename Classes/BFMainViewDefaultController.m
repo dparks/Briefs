@@ -20,20 +20,20 @@
     if (self = [super initWithNibName:@"BFMainViewDefaultController" bundle:nil]) {
         navigation = controller;
     }
-    
+
     return self;
 }
 
-- (void)viewDidLoad 
+- (void)viewDidLoad
 {
     [super viewDidLoad];
-    
+
     self.tableView.backgroundColor = [UIColor clearColor];
     self.tableView.separatorColor = [BFConfig separatorColorForTableView];
-    
+
 }
 
-- (void)viewWillAppear:(BOOL)animated 
+- (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
 
@@ -44,11 +44,11 @@
         UITableViewCell *selectedCell = [self.tableView cellForRowAtIndexPath:selection];
         [selectedCell setSelected:NO animated:YES];
     }
-    
+
     [self updateAndReload];
 }
 
-- (void)viewDidUnload 
+- (void)viewDidUnload
 {
     [super viewDidUnload];
 
@@ -57,7 +57,7 @@
 }
 
 
-- (void)dealloc 
+- (void)dealloc
 {
     [super dealloc];
 }
@@ -71,22 +71,22 @@
 {
     NSMutableArray *briefControllers = [NSMutableArray array];
     NSMutableArray *briefcastController = [NSMutableArray array];
-    
+
     // get most recently viewed briefs
     id<BFBriefDataSource> recentBriefs = [[BFDataManager sharedBFDataManager] briefsSortedAs:BFDataManagerSortByDateOpened limitTo:2];
     if ([recentBriefs numberOfRecords] >= 1) {
         BFRefreshBriefCellController *controller1 = [[[BFRefreshBriefCellController alloc] initWithBrief:[recentBriefs dataForIndex:0]] autorelease];
         controller1.navigation = navigation;
         [briefControllers addObject:controller1];
-        
+
         if ([recentBriefs numberOfRecords] >= 2) {
             BFRefreshBriefCellController *controller2 = [[[BFRefreshBriefCellController alloc] initWithBrief:[recentBriefs dataForIndex:1]] autorelease];
             controller2.navigation = navigation;
             [briefControllers addObject:controller2];
         }
     }
-    
-    
+
+
     // get last opened briefcast
     NSArray *lastOpenedBriefcast = [[BFDataManager sharedBFDataManager] briefcastsSortedAs:BFDataManagerSortByDateOpened limitTo:1];
     if (lastOpenedBriefcast != nil && [lastOpenedBriefcast count] > 0) {
@@ -95,7 +95,7 @@
         [briefcastController addObject:controller];
     }
     else briefcastController = nil;
-    
+
     self.tableGroups = [NSArray arrayWithObjects:briefControllers, briefcastController, nil];
 }
 
