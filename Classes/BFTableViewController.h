@@ -9,7 +9,7 @@
 #import <UIKit/UIKit.h>
 
 //  Adapted from code seen on http://cocoawithlove.com/2008/12/heterogeneous-cells-in.html
-// 
+//
 //  Originally created by Matt Gallagher on 27/12/08.
 //  Copyright 2008 Matt Gallagher. All rights reserved.
 //

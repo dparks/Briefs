@@ -7,7 +7,7 @@ Contact
 
 This framework is currently a work in progress. Please contact me with any questions about future status and feature requests.
 
-<a href="mailto:rob@robrhyne.com">rob@robrhyne.com</a>  
+<a href="mailto:rob@robrhyne.com">rob@robrhyne.com</a>
 
 
 About
@@ -23,7 +23,7 @@ At it's core, each brief is merely a text file that references a series of stati
 
 Scenes
 ------
-The organization of a brief is divided into `scenes` which represent a single state for any given screen inside of your application. Each `scene` contains a transition style that controls how the image associated with the `scene` appears and exits. 
+The organization of a brief is divided into `scenes` which represent a single state for any given screen inside of your application. Each `scene` contains a transition style that controls how the image associated with the `scene` appears and exits.
 
 Actors
 ------
@@ -39,7 +39,7 @@ Components
 Briefs is comprised of three major projects, all hosted on GitHub. There is (1) this project, Briefs.app, (2) the [Briefs-data][data] project and (3) the [Briefs-util][util] project. All are combined to create the Briefs ecosystem.
 
 [data]: http://github.com/capttaco/Briefs-data
-[util]: http://github.com/capttaco/Briefs-util 
+[util]: http://github.com/capttaco/Briefs-util
 
 Briefs.app
 ----------
@@ -53,7 +53,7 @@ The `Briefs-data` project is a Cocoa library that reads, writes and manages brie
 
 Briefs-util
 -----------
-`Briefs-util` is a series of utilities for _authoring_ briefs. It includes a parser called `BS` that compiles `.bs` or _briefscripts_ into the `.brieflist` format. Briefscript is a more concise language built for speed and readability. More information can found on [its project page][util]. 
+`Briefs-util` is a series of utilities for _authoring_ briefs. It includes a parser called `BS` that compiles `.bs` or _briefscripts_ into the `.brieflist` format. Briefscript is a more concise language built for speed and readability. More information can found on [its project page][util].
 
 
 Getting Started
@@ -70,15 +70,15 @@ Start building your brief, first by visiting the [Briefs-util][util] project and
     scene: Springboard
     image: imgs/0-springboard.png
 
-        actor: Pick SMS App    
-            position: 19, 25 
-                size: 55, 55   
+        actor: Pick SMS App
+            position: 19, 25
+                size: 55, 55
               action: goto(Main)
 
 Then compile the script (in the example, we're assuming the name `foo.bs`) running the following in `terminal.app`:
-    
+
     bs foo.bs > foo-source.brieflist
-    
+
 This will compile your script into a `foo-source.brieflist` file.
 
 2. Compact the Brief
@@ -86,7 +86,7 @@ This will compile your script into a `foo-source.brieflist` file.
 Inside Xcode, switch your target to `BriefsCompactor` and build the project. (You might have to switch the SDK) Copy the resulting script, `compact-briefs` onto your local path, for instance in `/usr/local/bin/`. Once on your path, go back to `terminal.app` and run:
 
     compact-briefs foo-source.brieflist foo.brieflist
-    
+
 This will create a single file `foo.brieflist` that contains all of the raw image data.
 
 3. Copy into Briefs.app

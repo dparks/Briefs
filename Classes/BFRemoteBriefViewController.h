@@ -18,7 +18,7 @@
     BFRemoteBriefSaver       *remoteSaver;
     NSString                 *locationOfBrief;
     BOOL                     alreadyLoaded;
-    
+
     NSData                  *briefData;
     id<BFRemoteBriefViewDelegate> delegate;
 }

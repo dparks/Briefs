@@ -20,7 +20,7 @@
     if (self = [super init]) {
         backingArray = [backing retain];
     }
-    
+
     return self;
 }
 

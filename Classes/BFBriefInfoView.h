@@ -8,7 +8,7 @@
 
 #import "BFBriefViewDelegate.h"
 
-@interface BFBriefInfoView : UIView 
+@interface BFBriefInfoView : UIView
 {
     IBOutlet id<BFBriefViewDelegate>   controller;
     IBOutlet UILabel                   *titleLabel;

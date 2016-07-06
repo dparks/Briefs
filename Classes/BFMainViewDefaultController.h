@@ -8,11 +8,11 @@
 
 #import "BFTableViewController.h"
 
-@interface BFMainViewDefaultController : BFTableViewController 
+@interface BFMainViewDefaultController : BFTableViewController
 {
     IBOutlet UIView     *briefHeaderView;
     IBOutlet UIView     *briefcastHeaderView;
-    
+
     UINavigationController *navigation;
 }
 

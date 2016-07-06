@@ -13,37 +13,37 @@
 typedef enum {
     /** Brief already exists, but a newer version exists */
     BFBriefCellInstallTypeUpdate = -123,
-    
+
     /** Brief is not installed */
     BFBriefCellInstallTypeNewInstall = -122,
-    
+
     /** Brief is installed with the newest version */
     BFBriefCellInstallTypeAlreadyInstalled = -133
-    
+
 } BFBriefCellInstallType;
 
 
-@interface BFBriefCellController : NSObject<BFCellController> 
+@interface BFBriefCellController : NSObject<BFCellController>
 {
     id<BFBriefcastEventDelegate>    delegate;
     BFBriefCellInstallType          installType;
     FPItem                          *brief;
-    
+
     // UI State
     BOOL    isSelected;
     BOOL    isInstallButtonExpanded;
-    
-    
+
+
     // Text
     IBOutlet UILabel    *indexLabel;
     IBOutlet UILabel    *titleLabel;
     IBOutlet UILabel    *descLabel;
-    
+
     // Layout
     IBOutlet UIView     *leftAccessoryView;
     IBOutlet UIView     *contentView;
     IBOutlet UIView     *rightAccessoryView;
-    
+
     // Controls
     IBOutlet UIView     *indexView;
     IBOutlet UIView     *remotePlayView;

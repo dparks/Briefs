@@ -13,7 +13,7 @@
 @protocol BFAddBriefcastViewDelegate;
 
 
-@interface BFAddBriefcastViewController : BFTableViewController 
+@interface BFAddBriefcastViewController : BFTableViewController
 {
     id <BFAddBriefcastViewDelegate> delegate;
 }

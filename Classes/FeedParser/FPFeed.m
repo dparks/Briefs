@@ -56,7 +56,7 @@
 			[self registerHandler:NULL forElement:key namespaceURI:@"" type:FPXMLParserSkipElementType];
 		}
 		[self registerHandler:@selector(rss_item:parser:) forElement:@"item" namespaceURI:@"" type:FPXMLParserStreamElementType];
-		
+
 		// atom elements
 		[self registerHandler:@selector(atom_link:parser:) forElement:@"link"
 				 namespaceURI:kFPXMLParserAtomNamespaceURI type:FPXMLParserSkipElementType];

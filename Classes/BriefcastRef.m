@@ -1,4 +1,4 @@
-// 
+//
 //  BriefcastRef.m
 //  Briefs
 //
@@ -10,7 +10,7 @@
 
 #import "BriefRef.h"
 
-@implementation BriefcastRef 
+@implementation BriefcastRef
 
 @dynamic dateLastRefresh;
 @dynamic fromURL;

@@ -24,42 +24,42 @@ NSDictionary*   __process(BFScene *, NSString *);
 #pragma mark -
 #pragma mark Main Function
 
-int main (int argc, const char * argv[]) 
+int main (int argc, const char * argv[])
 {
     NSAutoreleasePool   *pool = [[NSAutoreleasePool alloc] init];
     NSProcessInfo       *info = [NSProcessInfo processInfo];
     NSArray             *args = [info arguments];
-    
+
     // 0. Validate arguments
     if ([args count] < 2) {
         __pp(@"Usage: %@ unpacked [output]", [info processName]);
         exit(0);
     }
 
-    // 1. Convert local paths into absolute paths & 
+    // 1. Convert local paths into absolute paths &
     //    derive the working directory of the brief
-    
+
     NSString *path = [args objectAtIndex:1];
     //NSString *path = @"~/Desktop/demo/demo-source.brieflist"; //[args objectAtIndex:1];
     if (![path isAbsolutePath]) {
         path = [[[NSFileManager defaultManager] currentDirectoryPath] stringByAppendingFormat:@"/%@", path];
     }
     NSString *workingDirectory = [path stringByDeletingLastPathComponent];
-    
+
     // 2. Read in passed brief
     NSMutableDictionary *dict = [NSMutableDictionary dictionaryWithContentsOfFile:path];
     NSMutableArray *scenes = [NSMutableArray arrayWithCapacity:[[dict valueForKey:@"scenes"] count]];
-    
+
     // 3. Process the brief, scene by scene
     for (NSDictionary *dictionary in [dict valueForKey:@"scenes"]) {
         BFScene *scene = [[BFScene alloc] init:[dictionary valueForKey:@"name"] withDictionary:dictionary];
         [scenes addObject: __process(scene, workingDirectory)];
         [scene release];
     }
-    
-    // 4. Collect compacted contents 
+
+    // 4. Collect compacted contents
     [dict setObject:scenes forKey:@"scenes"];
-    
+
     // 5. Write out compacted brief to file. If no output
     //      path is passed, default to "output.brieflist"
     NSString *output;
@@ -73,10 +73,10 @@ int main (int argc, const char * argv[])
         output = [[[NSFileManager defaultManager] currentDirectoryPath] stringByAppendingFormat:@"/%@", @"output.brieflist"];
     }
     __pp(@"Writing compacted brief to: %@", output);
-    
+
     NSString *error;
-    NSData *data = [NSPropertyListSerialization dataFromPropertyList:dict 
-                            format:NSPropertyListBinaryFormat_v1_0 
+    NSData *data = [NSPropertyListSerialization dataFromPropertyList:dict
+                            format:NSPropertyListBinaryFormat_v1_0
                             errorDescription:&error];
     [data writeToFile:output atomically:YES];
     [pool drain];
@@ -93,42 +93,42 @@ NSDictionary* __process(BFScene *scene, NSString *directory)
     __pp(@"Compacting %@", [scene name]);
     NSDictionary *dict = [scene copyAsDictionary];
     NSMutableDictionary *unpackedDictionary = [NSMutableDictionary dictionaryWithDictionary:dict];
-    
+
     // compact scene images
     NSData *imageData = __image_data([scene bg], directory);
     //__pp(@"getting Scene image data: %@", imageData);
     [unpackedDictionary setObject:imageData forKey:@"img"];
-    
+
     int count = 0;
     NSArray *arrayOfActors = [unpackedDictionary objectForKey:@"actors"];
     NSMutableArray *newActorsArray = [NSMutableArray arrayWithCapacity:[arrayOfActors count]];
     for (BFActor *actor in [scene actors]) {
         __pp(@"                     %@", [actor name]);
-        
+
         NSMutableDictionary *unpackedActor = [NSMutableDictionary dictionaryWithDictionary:[arrayOfActors objectAtIndex:count++]];
         if (actor.bg != nil && ![actor.bg isEqual:@""]) {
             NSData *actorImageData = __image_data([actor bg], directory);
             [unpackedActor setObject:actorImageData forKey:@"img"];
         }
-        
+
         // check for disabled graphics too
         if (actor.disabledBg != nil && ![actor.disabledBg isEqual:@""]) {
             NSData *actorImageData = __image_data([actor disabledBg], directory);
             [unpackedActor setObject:actorImageData forKey:@"disabled"];
         }
-        
+
         // check for touched graphics too
         if (actor.touchedBg != nil && ![actor.touchedBg isEqual:@""]) {
             NSData *actorImageData = __image_data([actor touchedBg], directory);
             [unpackedActor setObject:actorImageData forKey:@"touched"];
         }
-        
+
         [newActorsArray addObject:unpackedActor];
     }
     [unpackedDictionary setObject:newActorsArray forKey:@"actors"];
-    
+
     [dict release];
-    
+
     return unpackedDictionary;
 }
 
@@ -149,11 +149,11 @@ void __pp(NSString *fmt, ...)
 {
     va_list ap;
     va_start(ap, fmt);
-    
+
     NSString *output = [[NSString alloc] initWithFormat:fmt arguments:ap];
     printf([output UTF8String]);
     printf("\n");
     [output release];
-    
+
     va_end(ap);
 }

@@ -9,7 +9,7 @@
 
 @implementation UINavigationBar (CustomBackground)
 
-- (void)drawRect:(CGRect)rect 
+- (void)drawRect:(CGRect)rect
 {
     UIImage *image = [UIImage imageNamed:@"navigation-bar.png"];
     [image drawInRect:CGRectMake(0, 0, self.frame.size.width, self.frame.size.height)];

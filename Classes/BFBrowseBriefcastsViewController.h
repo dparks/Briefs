@@ -10,7 +10,7 @@
 #import "BFAddBriefcastViewController.h"
 
 
-@interface BFBrowseBriefcastsViewController : BFTableViewController <BFAddBriefcastViewDelegate> 
+@interface BFBrowseBriefcastsViewController : BFTableViewController <BFAddBriefcastViewDelegate>
 {
     IBOutlet UIView *tableHeaderView;
     IBOutlet UIView *tableFooterView;

@@ -88,7 +88,7 @@
 	[aLink release];
 }
 
-- (void)rss_enclosure:(NSString *)textValue attributes:(NSDictionary *)attributes parser:(NSXMLParser *)parser {	
+- (void)rss_enclosure:(NSString *)textValue attributes:(NSDictionary *)attributes parser:(NSXMLParser *)parser {
 	FPEnclosure *anEnclosure = [[FPEnclosure alloc] initWithURL:[attributes objectForKey:@"url"] type:[attributes objectForKey:@"type"] length:[attributes objectForKey:@"length"]];
 	enclosure = [anEnclosure retain];
 	[anEnclosure release];

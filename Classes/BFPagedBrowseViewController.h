@@ -10,7 +10,7 @@
 #import "BFBriefDataSource.h"
 
 //  Adapted from code seen on http://cocoawithlove.com/2009/01/multiple-virtual-pages-in-uiscrollview.html
-//  
+//
 //  The following copyright, accompanied his code:
 //  Copyright 2009 Matt Gallagher. All rights reserved.
 //
@@ -21,7 +21,7 @@
 //  appreciated but not required.
 
 
-@interface BFPagedBrowseViewController : UIViewController 
+@interface BFPagedBrowseViewController : UIViewController
 {
     IBOutlet UIScrollView           *pagedHorizontalView;
     IBOutlet UIPageControl          *pageControl;

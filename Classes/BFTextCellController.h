@@ -9,7 +9,7 @@
 #import <Foundation/Foundation.h>
 #import "BFCellController.h"
 
-@interface BFTextCellController : NSObject<BFCellController> 
+@interface BFTextCellController : NSObject<BFCellController>
 {
     NSString *savedValue;
     NSString *labelText;

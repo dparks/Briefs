@@ -18,11 +18,11 @@
 {
     IBOutlet BFPreviewBriefView     *previewView;
     IBOutlet BFBriefInfoView        *infoView;
-    
+
     NSInteger                       pageIndex;
     id<BFBriefDataSource>           dataSource;
     BriefRef                        *briefBeingPreviewed;
-    
+
     UINavigationController          *parentNavigationController;
 
 }

@@ -13,13 +13,13 @@ image: images/welcome/bg.png
         size: 42,40
         position: 271,437
         action: goto(Simulated Login, pushLeft)
-    
+
     actor: Tap Me Button
         image: images/welcome/tapme.png
         size: 201,51
         position: 56,282
         action: show(Actor Callout)
-        
+
     actor: Actor Callout
         image: images/welcome/callout.png
         size: 140,104
@@ -30,7 +30,7 @@ image: images/welcome/bg.png
 
 ################################################################
 # Login Workflow
-           
+
 scene: Simulated Login
 image: images/login/bg.png
     actor: Show Keyboard
@@ -44,7 +44,7 @@ image: images/login/bg.png
     position: 0,480
       action: goto(Password Entered)
 
-      
+
 scene: Password Entered
 image: images/login/bg-filled.png
     actor: Login Button
@@ -62,7 +62,7 @@ image: images/login/bg-filled.png
 
 
 ################################################################
-# Actor Arcade Scene 
+# Actor Arcade Scene
 
 scene: Actor Arcade
 image: images/arcade/bg.png
@@ -75,22 +75,22 @@ image: images/arcade/bg.png
         image: images/arcade/invader.png
         size: 99,105
         position: 110,149
-        
+
     actor: Move Button
         size: 100, 51
         position: 59, 310
         action: move(Invader, 110, 100)
-        
+
     actor: Resize Button
         size: 100, 51
         position: 160, 310
         action: resize(Invader, 50, 57)
-        
+
 
 
 ################################################################
 # Scrollable Magic Scene
- 
+
 scene: Scrollable Magic
 image: images/scrollable/bg.png
     actor: Scrollable Actor
@@ -106,4 +106,4 @@ image: images/scrollable/bg.png
         size: 201,51
         position: 60,394
         action: goto(Welcome, zoomOut)
-   
+

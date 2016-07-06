@@ -6,7 +6,7 @@
 //  Copyright Digital Arch Design, 2009-2010. See LICENSE file for details.
 //
 
-@interface NSDictionary (BFAdditions) 
+@interface NSDictionary (BFAdditions)
 
 - (id)objectForKey:(NSString *)key orDefaultValue:(id)defaultValue;
 
